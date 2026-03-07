@@ -37,8 +37,38 @@ h1 {
   margin-bottom: 10px;
   border-left: 6px solid #333;
   padding-left: 10px;
+  display: flex;
+  align-items: center;
 }
 
+/* ▼ 開閉アイコン */
+.toggle-icon {
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: 10px;
+  user-select: none;
+  transition: transform 0.3s ease;
+}
+
+/* ▼ 左→下へ滑らかに展開するアニメーション */
+.spec-box-collapsible {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateX(-20px);
+  transition:
+    max-height 0.5s ease,
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+
+.spec-box-collapsible.open {
+  max-height: 1000px;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ▼ ボックス共通 */
 .spec-box {
   background: #fff;
   border: 2px solid #333;
@@ -46,6 +76,56 @@ h1 {
   width: 350px;
   margin: 0 auto 30px auto;
   border-radius: 6px;
+}
+
+/* ▼ リストの黒丸を消す＋左寄せ */
+.spec-box ul {
+  list-style: none;
+  padding-left: 5px;
+}
+
+/* ▼ 各項目の先頭に "> " を付ける */
+.spec-box ul li::before {
+  content: "> ";
+  font-weight: bold;
+  color: #333;
+}
+
+/* ▼ 全編成の折りたたみ */
+.train-list-collapsible {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition:
+    max-height 0.6s ease,
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+
+.train-list-collapsible.open {
+  max-height: 99999px; /* ← 無制限にして全編成表示OK */
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ▼ ボタン */
+.show-all-btn {
+  display: block;
+  width: 200px;
+  margin: 20px auto;
+  padding: 10px 0;
+  text-align: center;
+  background: #fff;
+  border: 2px solid #333;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background 0.2s;
+}
+
+.show-all-btn:hover {
+  background: #f5f5f5;
 }
 
 .train {
@@ -111,15 +191,19 @@ h1 {
 <div class="spec-box">
   <ul>
     <li><b>運用者</b><br>尾羽急電鉄</li>
-    <li><b>製造所</b><br>KYOUSAGE TRANSPORT ENGINEERING COMPANY [K-TREC]（キョーセージ総合車両製作所）</li>
+    <li><b>製造所</b><br>KYOUSAGE TRANSPORT ENGINEERING COMPANY [K-TREC]</li>
     <li><b>製造年</b><br>2023年（中間車：2024年）</li>
     <li><b>運用開始</b><br>2024年1月1日（4両編成：2025年4月22日）</li>
   </ul>
 </div>
 
-<!-- 主要諸元 -->
-<div class="section-title">主要諸元</div>
-<div class="spec-box">
+<!-- 主要諸元（折りたたみ式） -->
+<div class="section-title">
+  主要諸元
+  <span class="toggle-icon" id="spec-toggle">▶</span>
+</div>
+
+<div class="spec-box spec-box-collapsible" id="spec-box">
   <ul>
     <li><b>編成</b><br>4両×50編成（01F～50F）</li>
     <li><b>軌間</b><br>1,067 mm（狭軌）</li>
@@ -135,10 +219,10 @@ h1 {
     <li><b>車体幅</b><br>2,786 mm</li>
     <li><b>全高</b><br>4,120 mm</li>
     <li><b>車体</b><br>ステンレス鋼</li>
-    <li><b>台車</b><br>HK-41（電動台車）／ HK-40（付随台車）</li>
+    <li><b>台車</b><br>HK-41／HK-40</li>
     <li><b>駆動方式</b><br>WNドライブ</li>
-    <li><b>制御方式</b><br>IGBT素子VVVFインバータ制御</li>
-    <li><b>保安装置</b><br>パターン式ATS・デッドマン装置</li>
+    <li><b>制御方式</b><br>IGBT-VVVF</li>
+    <li><b>保安装置</b><br>パターン式ATS</li>
   </ul>
 </div>
 
@@ -156,60 +240,91 @@ h1 {
 
 <div class="direction">←尾羽原　　高徳→</div>
 
+<!-- ▼ 01F（最初に表示） -->
 <div id="train-container"></div>
 
+<!-- ▼ 全編成ボタン -->
+<div id="show-all-btn" class="show-all-btn">▼ 全編成を表示</div>
+
+<!-- ▼ 02F〜50F の隠し領域 -->
+<div id="train-list" class="train-list-collapsible"></div>
+
 <script>
-const container = document.getElementById("train-container");
+// ▼ 主要諸元の開閉
+const toggle = document.getElementById("spec-toggle");
+const box = document.getElementById("spec-box");
 
-for (let i = 1; i <= 50; i++) {
+toggle.addEventListener("click", () => {
+  box.classList.toggle("open");
+  toggle.textContent = box.classList.contains("open") ? "▼" : "▶";
+});
 
-  let f = String(i).padStart(2, "0"); // 01F表示用
-  let n = String(i).padStart(2, "0"); // ← 修正ポイント
+// ▼ 編成HTML生成関数
+function createTrainHTML(f, n) {
+  return `
+    <div class="section-title">${f}F</div>
+    <div class="train">
 
-  let html = `
-  <div class="section-title">${f}F</div>
-  <div class="train">
-
-    <div class="car">
-      <div class="car-top"><div class="panta"></div></div>
-      <div class="car-body">
-        <div class="car-type">TcM</div>
-        <div class="car-number">51${n}F</div>
+      <div class="car">
+        <div class="car-top"><div class="panta"></div></div>
+        <div class="car-body">
+          <div class="car-type">TcM</div>
+          <div class="car-number">51${n}F</div>
+        </div>
       </div>
-    </div>
 
-    <div class="car">
-      <div class="car-top"></div>
-      <div class="car-body">
-        <div class="car-type">T</div>
-        <div class="car-number">52${n}F</div>
+      <div class="car">
+        <div class="car-top"></div>
+        <div class="car-body">
+          <div class="car-type">T</div>
+          <div class="car-number">52${n}F</div>
+        </div>
       </div>
-    </div>
 
-    <div class="car">
-      <div class="car-top"><div class="panta"></div></div>
-      <div class="car-body">
-        <div class="car-type">M</div>
-        <div class="car-number">53${n}F</div>
+      <div class="car">
+        <div class="car-top"><div class="panta"></div></div>
+        <div class="car-body">
+          <div class="car-type">M</div>
+          <div class="car-number">53${n}F</div>
+        </div>
       </div>
-    </div>
 
-    <div class="car">
-      <div class="car-top"></div>
-      <div class="car-body">
-        <div class="car-type">Tc</div>
-        <div class="car-number">54${n}F</div>
+      <div class="car">
+        <div class="car-top"></div>
+        <div class="car-body">
+          <div class="car-type">Tc</div>
+          <div class="car-number">54${n}F</div>
+        </div>
       </div>
-    </div>
 
-  </div>
+    </div>
   `;
-
-  container.insertAdjacentHTML("beforeend", html);
 }
+
+// ▼ 01F を表示
+const container = document.getElementById("train-container");
+container.insertAdjacentHTML("beforeend", createTrainHTML("01", "01"));
+
+// ▼ 02F〜50F を隠し領域に生成
+const list = document.getElementById("train-list");
+for (let i = 2; i <= 50; i++) {
+  let f = String(i).padStart(2, "0");
+  let n = String(i).padStart(2, "0");
+  list.insertAdjacentHTML("beforeend", createTrainHTML(f, n));
+}
+
+// ▼ ボタンで開閉
+const btn = document.getElementById("show-all-btn");
+btn.addEventListener("click", () => {
+  list.classList.toggle("open");
+
+  if (list.classList.contains("open")) {
+    btn.textContent = "▲ 全編成を隠す";
+  } else {
+    btn.textContent = "▼ 全編成を表示";
+  }
+});
 </script>
 
 </body>
-
 </html>
-
