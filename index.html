@@ -2,178 +2,180 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>5000系 編成一覧</title>
+<title>尾羽急電鉄 ホーム</title>
 
 <style>
 body {
   font-family: Zen Maru Gothic;
   background: #f0f0f0;
-  padding: 20px;
-}
-
-h1 {
+  padding: 30px;
   text-align: center;
-  margin-bottom: 5px;
-  font-size: 32px;
+  padding-top: 100px; /* ← ヘッダー分の余白 */
 }
 
-.subtitle {
-  text-align: center;
-  font-size: 18px;
-  margin-bottom: 20px;
-  color: #444;
+/* ▼ 2段ヘッダー（見切れ完全解決版） */
+.obq-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #ffffff;
+  border-bottom: 3px solid #333;
+  padding: 10px 20px;
+  z-index: 9999;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  text-align: left;
 }
 
-.direction {
-  font-size: 20px;
-  text-align: center;
-  margin-bottom: 25px;
-}
-
-.section-title {
-  font-size: 22px;
+.header-title {
+  font-size: 26px;
   font-weight: bold;
-  margin-top: 25px;
-  margin-bottom: 10px;
-  border-left: 6px solid #333;
-  padding-left: 10px;
+  margin-bottom: 8px;
+}
+
+.header-menu {
   display: flex;
-  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap; /* ← 画面が狭いときは自動で折り返す */
 }
 
-/* ▼ 開閉アイコン */
-.toggle-icon {
-  font-size: 20px;
-  cursor: pointer;
-  margin-left: 10px;
-  user-select: none;
-  transition: transform 0.3s ease;
-}
-
-/* ▼ 左→下へ滑らかに展開するアニメーション */
-.spec-box-collapsible {
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  transform: translateX(-20px);
-  transition:
-    max-height 0.5s ease,
-    opacity 0.4s ease,
-    transform 0.4s ease;
-}
-
-.spec-box-collapsible.open {
-  max-height: 1000px;
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/* ▼ ボックス共通 */
-.spec-box {
-  background: #fff;
-  border: 2px solid #333;
-  padding: 15px;
-  width: 350px;
-  margin: 0 auto 30px auto;
-  border-radius: 6px;
-}
-
-/* ▼ リストの黒丸を消す＋左寄せ */
-.spec-box ul {
-  list-style: none;
-  padding-left: 5px;
-}
-
-/* ▼ 各項目の先頭に "> " を付ける */
-.spec-box ul li::before {
-  content: "> ";
-  font-weight: bold;
+.header-menu a {
+  font-size: 18px;
+  text-decoration: none;
   color: #333;
+  font-weight: bold;
+  transition: 0.2s;
 }
 
-/* ▼ 全編成の折りたたみ */
-.train-list-collapsible {
-  max-height: 0;
+.header-menu a:hover {
+  color: #0078ff;
+  transform: translateY(-2px);
+}
+
+/* ▼ ヘッダー分の余白 */
+body {
+  padding-top: 120px;
+}
+
+
+/* ▼ サブタイトル */
+.subtitle {
+  font-size: 18px;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+/* ▼ パスカード一覧 */
+.pass-container {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+/* ▼ パスカード */
+.pass-card {
+  width: 260px;
+  height: 320px;
+  background: #fff;
+  border-radius: 16px;
   overflow: hidden;
-  opacity: 0;
-  transform: translateY(-10px);
-  transition:
-    max-height 0.6s ease,
-    opacity 0.4s ease,
-    transform 0.4s ease;
+  border: 2px solid #333;
+  cursor: pointer;
+  transition: transform 0.25s, box-shadow 0.25s;
+  position: relative;
 }
 
-.train-list-collapsible.open {
-  max-height: 99999px; /* ← 無制限にして全編成表示OK */
+.pass-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+
+.pass-card img {
+  width: 100%;
+  height: 75%;
+  object-fit: cover;
+}
+
+.pass-title {
+  height: 25%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* ▼ 車両一覧（下からスライド） */
+.train-list {
+  width: 90%;
+  max-width: 900px;
+  margin: 0 auto;
+  display: none;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.4s, transform 0.4s;
+}
+
+.train-list.show {
+  display: flex;
   opacity: 1;
   transform: translateY(0);
 }
 
-/* ▼ ボタン */
-.show-all-btn {
-  display: block;
+/* ▼ 車両カード */
+.train-card {
   width: 200px;
-  margin: 20px auto;
-  padding: 10px 0;
-  text-align: center;
+  height: 240px;
   background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
   border: 2px solid #333;
-  border-radius: 6px;
   cursor: pointer;
-  font-size: 18px;
-  transition: background 0.2s;
+  transition: transform 0.25s, box-shadow 0.25s;
 }
 
-.show-all-btn:hover {
-  background: #f5f5f5;
+.train-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
 }
 
-.train {
+.train-card img {
+  width: 100%;
+  height: 70%;
+  object-fit: cover;
+}
+
+.train-title {
+  height: 30%;
   display: flex;
-  gap: 12px;
   justify-content: center;
-  margin-bottom: 25px;
-}
-
-.car {
-  width: 120px;
-  height: 140px;
-  border: 2px solid #333;
-  border-radius: 6px;
-  background: #ffffff;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  position: relative;
-}
-
-.car-top {
-  height: 25px;
-  position: relative;
-}
-
-.panta {
-  width: 25px;
-  height: 10px;
-  background: #bbb;
-  position: absolute;
-  right: 6px;
-  top: 6px;
-}
-
-.car-body {
-  text-align: center;
-  font-size: 13px;
-}
-
-.car-type {
-  font-size: 12px;
-  margin-bottom: 2px;
-}
-
-.car-number {
-  font-size: 16px;
+  align-items: center;
+  font-size: 18px;
   font-weight: bold;
+}
+
+/* ▼ ローディング画面 */
+#loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(240,240,240,0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32px;
+  font-weight: bold;
+  color: #333;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s;
 }
 </style>
 
@@ -181,149 +183,604 @@ h1 {
 
 <body>
 
-<h1>5000系</h1>
-<div class="subtitle">ー 無料車 ー</div>
+<!-- ▼ 固定ヘッダー（非公式資料サイト） -->
+<header class="obq-header">
+  <div class="header-title">
+    尾羽急電鉄　車両詳細表（非公式）
+  </div>
 
-<div class="direction">←尾羽原　　高徳→</div>
+  <nav class="header-menu">
+    <a href="home.html">Home</a>
+    <a href="admin.html">管理者詳細</a>
+    <a href="site.html">サイト詳細</a>
+    <a href="contact.html">お問い合わせ</a>
+  </nav>
+</header>
 
-<!-- 基本情報 -->
-<div class="section-title">基本情報</div>
-<div class="spec-box">
-  <ul>
-    <li><b>運用者</b><br>尾羽急電鉄</li>
-    <li><b>製造所</b><br>KYOUSAGE TRANSPORT ENGINEERING COMPANY [K-TREC]</li>
-    <li><b>製造年</b><br>2023年（中間車：2024年）</li>
-    <li><b>運用開始</b><br>2024年1月1日（4両編成：2025年4月22日）</li>
-  </ul>
+
+<!-- ▼ ここから元の内容（h1削除済み） -->
+<div class="subtitle">パス選択</div>
+
+<!-- ▼ パスカード -->
+<div class="pass-container">
+
+  <div class="pass-card" onclick="toggleList('free')">
+    <img src="https://via.placeholder.com/400x300?text=Free+Pass">
+    <div class="pass-title">無料車</div>
+  </div>
+
+  <div class="pass-card" onclick="toggleList('vip')">
+    <img src="https://via.placeholder.com/400x300?text=VIP+Pass">
+    <div class="pass-title">VIPパス</div>
+  </div>
+
+  <div class="pass-card" onclick="toggleList('commute')">
+    <img src="https://via.placeholder.com/400x300?text=Commuter+Pass">
+    <div class="pass-title">通勤列車パス</div>
+  </div>
+
+  <div class="pass-card" onclick="toggleList('private')">
+    <img src="https://via.placeholder.com/400x300?text=Private+Railway">
+    <div class="pass-title">私鉄列車パス</div>
+  </div>
+
+  <div class="pass-card" onclick="toggleList('remodel')">
+    <img src="https://via.placeholder.com/400x300?text=Remodel+Pass">
+    <div class="pass-title">車体改造パス</div>
+  </div>
+
+  <div class="pass-card" onclick="toggleList('fourcars')">
+    <img src="https://via.placeholder.com/400x300?text=4Cars+Pass">
+    <div class="pass-title">4両列車パス</div>
+  </div>
+
 </div>
 
-<!-- 主要諸元（折りたたみ式） -->
-<div class="section-title">
-  主要諸元
-  <span class="toggle-icon" id="spec-toggle">▶</span>
+<!-- ▼ 無料車（21形式） -->
+<div id="list-free" class="train-list">
+
+  <div class="train-card" onclick="loadPage('free/5000kei.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">5000系</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('free/2020kei.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">2020系</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('free/7070kei.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">7070系</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('free/2000A_B.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">2000A系B更新車</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('free/4000kei.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">4000系</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('free/OB610.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">OB610系</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('free/RB3000.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">RB3000系</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('free/kumoha42.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">クモハ42型</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('free/OER10_v2.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">OER-10形（V2.0）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('free/OER10_v3.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">OER-10形（V3.0）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('free/8300kei.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">8300系</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('free/E231_1000.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">E231-1000番台風</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('free/E531.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">E531系風</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('free/OB13_000.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">OB13-000系</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('free/AE13_000.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">AE13-000系</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('free/209_1000_chuo.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">209-1000番台風（中央）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('free/209_1000_joban.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">209-1000番台風（常盤）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('free/E531_red.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">E531系風赤電</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('free/209_2100.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">209-2100番台風</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('free/209_0_3000.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">209-0番台,3000番台風</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('free/E231_800.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">E231-800番台風</div>
+  </div>
+
 </div>
 
-<div class="spec-box spec-box-collapsible" id="spec-box">
-  <ul>
-    <li><b>編成</b><br>4両×50編成（01F～50F）</li>
-    <li><b>軌間</b><br>1,067 mm（狭軌）</li>
-    <li><b>電気方式</b><br>直流1,500V（架空電車線方式）</li>
-    <li><b>最高運転速度</b><br>140 km/h</li>
-    <li><b>設計最高速度</b><br>160 km/h</li>
-    <li><b>起動加速度</b><br>3.7 km/h/s（単独運用時）<br>5.4 km/h/s（ハイパワー時）</li>
-    <li><b>減速度（常用）</b><br>4.5 km/h/s</li>
-    <li><b>減速度（非常）</b><br>5.0 km/h/s</li>
-    <li><b>車両定員</b><br>142名（先頭車）</li>
-    <li><b>全長</b><br>20,000 mm</li>
-    <li><b>全幅</b><br>2,866 mm</li>
-    <li><b>車体幅</b><br>2,786 mm</li>
-    <li><b>全高</b><br>4,120 mm</li>
-    <li><b>車体</b><br>ステンレス鋼</li>
-    <li><b>台車</b><br>HK-41／HK-40</li>
-    <li><b>駆動方式</b><br>WNドライブ</li>
-    <li><b>制御方式</b><br>IGBT-VVVF</li>
-    <li><b>保安装置</b><br>パターン式ATS</li>
-  </ul>
+<!-- ▼ VIPパス（9形式） -->
+<div id="list-vip" class="train-list">
+
+  <div class="train-card" onclick="loadPage('vip/OB778_2500.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">OB778系2500番台</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('vip/778_1190.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">778系1190番台</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('vip/kiha778_1000.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">キハ778形1000番台</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('vip/778_FUEN.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">778形FU~EN</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('vip/420_remodel.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">420形（リモデル）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('vip/420_421_422.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">420形（421-422F）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('vip/PR2000A.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">PR2000A系</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('vip/EF95_501.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">EF95-501</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('vip/OER10_7cars.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">OER-10形（7両）</div>
+  </div>
+
 </div>
 
-<!-- 共通仕様 -->
-<div class="section-title">共通仕様</div>
-<div class="spec-box">
-  <ul>
-    <li>乗客固定：×</li>
-    <li>自動放送：×</li>
-    <li>車掌乗務：〇</li>
-    <li>ブザー：〇</li>
-    <li>ドアカット：〇（2両単位）</li>
-  </ul>
+<!-- ▼ 通勤列車パス（15形式） -->
+<div id="list-commute" class="train-list">
+
+  <div class="train-card" onclick="loadPage('commute/001_0.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">001系0番台</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('commute/001_0_update.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">001系0番台（機器更新）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('commute/001_100.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">001系100番台</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('commute/001_1000.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">001系1000番台</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('commute/001_1200.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">001系1200番台</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('commute/001_1500_update.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">001系1500番台（機器更新）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('commute/001_1510.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">001系1510番台</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('commute/001_3000.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">001系3000番台</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('commute/001_6000.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">001系6000番台（Class001）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('commute/OB07_0.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">OB07形0番台</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('commute/OB07_200_R201.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">OB07形200番台（R201編成）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('commute/OB07_3400.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">OB07形3400番台</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('commute/BAT07_BA01.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">BAT07形（BA01編成）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('commute/7080.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">7080系</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('commute/2000_airport.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">2000系（空港特急車仕様）</div>
+  </div>
+
 </div>
 
-<div class="direction">←尾羽原　　高徳→</div>
 
-<!-- ▼ 01F（最初に表示） -->
-<div id="train-container"></div>
+<!-- ▼ 私鉄列車パス（26形式） -->
+<div id="list-private" class="train-list">
 
-<!-- ▼ 全編成ボタン -->
-<div id="show-all-btn" class="show-all-btn">▼ 全編成を表示</div>
+  <div class="train-card" onclick="loadPage('private/1000_0.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">1000系0番台</div>
+  </div>
 
-<!-- ▼ 02F〜50F の隠し領域 -->
-<div id="train-list" class="train-list-collapsible"></div>
+  <div class="train-card" onclick="loadPage('private/1000_1024F.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">1000系1024F</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('private/1000_20.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">1000系20番台</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('private/1000_2nd.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">1000系2次車</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('private/2000_1_led3.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">2000系1次車（3色LED）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('private/2000_1_fullcolor.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">2000系1次車（フルカラーLED）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('private/2000_2.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">2000系2次車</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('private/2000_5.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">2000系5次車</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('private/2000_5_imonsen.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">2000系5次車（井問線用）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('private/2000_R2078.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">2000系R2078編成</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('private/2000_overhaul.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">2000系大規模修繕車</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('private/2000_final.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">2000系最終増備車</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('private/2000_limited.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">2000系特急車</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('private/2030.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">2030系</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('private/2500_0_2501F.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">2500系0番台2501F</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('private/3500_3900.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">3500系3900番台</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('private/5700.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">5700系</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('private/6500.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">6500系</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('private/6500_type1.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">6500系（Type1）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('private/6500_light.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">6500系（軽量化）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('private/6800_6855F.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">6800系6855F</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('private/6800_6859F_renew.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">6800系6859F（リニューアル車）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('private/7000_renew.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">7000系（リニューアル車）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('private/7000_old.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">7000系（未リニューアル車）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('private/9000.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">9000系</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('private/BEC2000.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">BEC2000系</div>
+  </div>
+
+</div>
+
+<!-- ▼ 車体改造パス（9形式） -->
+<div id="list-remodel" class="train-list">
+
+  <div class="train-card" onclick="loadPage('remodel/2000_newM.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">2000系新塗装M風</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('remodel/2000_oldM.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">2000系旧塗装M風</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('remodel/6800_corrugate2.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">6800系コルゲート2次車</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('remodel/6800_10_pre.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">6800系10番台（前期）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('remodel/6800_10_late.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">6800系10番台（後期）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('remodel/6800_2door.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">6800系（2扉車）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('remodel/6800_corrugate.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">6800系（コルゲート車）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('remodel/6800_oneMan.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">6800系（ワンマン車）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('remodel/6835.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">6835系</div>
+  </div>
+
+</div>
+
+
+
+<!-- ▼ 4両列車パス（15形式） -->
+<div id="list-fourcars" class="train-list">
+
+  <div class="train-card" onclick="loadPage('fourcars/2000_doubledeck.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">2000系（ダブルデッカー車）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('fourcars/8600.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">8600系</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('fourcars/6800.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">6800系</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('fourcars/TG09_1000.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">TG09型1000番台</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('fourcars/TGSCL9_4500.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">TG-SCL9型4500番台</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('fourcars/OB9L_500.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">OB-9L系500番台</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('fourcars/2030_2030_400.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">2030系＋2030系400番台（連結仕様）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('fourcars/7070_4.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">7070系（4両）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('fourcars/7070_weekly.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">7070系（ウィークリー）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('fourcars/7000_20_4.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">7000系20番台（4両）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('fourcars/3500.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">3500系</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('fourcars/10000.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">10000系</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('fourcars/1000_4.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">1000系（4両）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('fourcars/2500_20_2921F.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">2500系20番台（2921F）</div>
+  </div>
+
+  <div class="train-card" onclick="loadPage('fourcars/2500_40_2941F.html')">
+    <img src="assets/noimage.png">
+    <div class="train-title">2500系40番台（2941F）</div>
+  </div>
+
+</div>
+
+
+
+<!-- ▼ ローディング画面 -->
+<div id="loading-screen">Now Loading…</div>
 
 <script>
-// ▼ 主要諸元の開閉
-const toggle = document.getElementById("spec-toggle");
-const box = document.getElementById("spec-box");
+let currentOpen = null;
 
-toggle.addEventListener("click", () => {
-  box.classList.toggle("open");
-  toggle.textContent = box.classList.contains("open") ? "▼" : "▶";
-});
+/* ▼ パスを押したら車両一覧を開閉 */
+function toggleList(id) {
+  const list = document.getElementById("list-" + id);
 
-// ▼ 編成HTML生成関数
-function createTrainHTML(f, n) {
-  return `
-    <div class="section-title">${f}F</div>
-    <div class="train">
-
-      <div class="car">
-        <div class="car-top"><div class="panta"></div></div>
-        <div class="car-body">
-          <div class="car-type">TcM</div>
-          <div class="car-number">51${n}F</div>
-        </div>
-      </div>
-
-      <div class="car">
-        <div class="car-top"></div>
-        <div class="car-body">
-          <div class="car-type">T</div>
-          <div class="car-number">52${n}F</div>
-        </div>
-      </div>
-
-      <div class="car">
-        <div class="car-top"><div class="panta"></div></div>
-        <div class="car-body">
-          <div class="car-type">M</div>
-          <div class="car-number">53${n}F</div>
-        </div>
-      </div>
-
-      <div class="car">
-        <div class="car-top"></div>
-        <div class="car-body">
-          <div class="car-type">Tc</div>
-          <div class="car-number">54${n}F</div>
-        </div>
-      </div>
-
-    </div>
-  `;
-}
-
-// ▼ 01F を表示
-const container = document.getElementById("train-container");
-container.insertAdjacentHTML("beforeend", createTrainHTML("01", "01"));
-
-// ▼ 02F〜50F を隠し領域に生成
-const list = document.getElementById("train-list");
-for (let i = 2; i <= 50; i++) {
-  let f = String(i).padStart(2, "0");
-  let n = String(i).padStart(2, "0");
-  list.insertAdjacentHTML("beforeend", createTrainHTML(f, n));
-}
-
-// ▼ ボタンで開閉
-const btn = document.getElementById("show-all-btn");
-btn.addEventListener("click", () => {
-  list.classList.toggle("open");
-
-  if (list.classList.contains("open")) {
-    btn.textContent = "▲ 全編成を隠す";
-  } else {
-    btn.textContent = "▼ 全編成を表示";
+  if (currentOpen === id) {
+    list.classList.remove("show");
+    currentOpen = null;
+    return;
   }
-});
+
+  if (currentOpen !== null) {
+    document.getElementById("list-" + currentOpen).classList.remove("show");
+  }
+
+  list.classList.add("show");
+  currentOpen = id;
+}
+
+/* ▼ ページ遷移（ロード画面付き） */
+function loadPage(url) {
+  const loading = document.getElementById("loading-screen");
+
+  loading.style.opacity = "1";
+  loading.style.pointerEvents = "auto";
+
+  setTimeout(() => {
+    window.location.href = url;
+  }, 800);
+}
 </script>
 
 </body>
