@@ -106,10 +106,10 @@ body {
   font-weight: bold;
 }
 
-/* ▼ 車両一覧（縦並び・横長カード） */
+/* ▼ 車両一覧（縦並び） */
 .train-list {
   width: 95%;
-  max-width: 900px;
+  max-width: 700px;
   margin: 0 auto;
   display: block;
   opacity: 0;
@@ -125,15 +125,15 @@ body {
   transform: translateY(0);
 }
 
-/* ▼ 1車両＝横長カード（比率 7:4） */
+/* ▼ 写真なしカード（タイトルのみ） */
 .train-card {
   width: 100%;
   background: #fff;
   border-radius: 10px;
-  overflow: hidden;
   border: 2px solid #333;
   cursor: pointer;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
+  padding: 20px 0;
   transition: transform 0.25s, box-shadow 0.25s;
 }
 
@@ -142,17 +142,9 @@ body {
   box-shadow: 0 6px 16px rgba(0,0,0,0.2);
 }
 
-/* ▼ 横長画像（比率 7:4） */
-.train-card img {
-  width: 100%;
-  aspect-ratio: 7 / 4;   /* ← これが比率7:4（高さが短くなる） */
-  object-fit: cover;
-}
-
-/* ▼ タイトル */
+/* ▼ タイトル（中央寄せ） */
 .train-title {
-  padding: 12px;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
   text-align: center;
 }
@@ -162,8 +154,9 @@ body {
   width: 100%;
   height: 2px;
   background: #ccc;
-  margin: 10px 0 25px 0;
+  margin: 5px 0 20px 0;
 }
+
 
 
 .train-card:hover {
@@ -812,6 +805,7 @@ function loadPage(url) {
 
 </body>
 </html>
+
 
 
 
