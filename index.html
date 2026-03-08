@@ -191,8 +191,9 @@ body {
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   transition: 0.2s;
-  z-index: 99999;
+  z-index: 999999; /* ← loading-screen より上にする */
 }
+
 
 #back-button:hover {
   background: #f0f0f0;
@@ -200,12 +201,11 @@ body {
 }
 </style>
 
-
 </head>
 
 <body>
-  
-<!-- ▼ 右下の戻るボタン -->
+
+<!-- ▼ 右下の戻るボタン（loading-screen の上に表示） -->
 <button id="back-button">戻る</button>
 
 <!-- ▼ 固定ヘッダー（非公式資料サイト） -->
@@ -807,7 +807,6 @@ function loadPage(url) {
   }, 800);
 }
 
-  <script>
 document.getElementById("back-button").addEventListener("click", () => {
 
   // ▼ ローディング画面を消す
@@ -817,18 +816,20 @@ document.getElementById("back-button").addEventListener("click", () => {
     loading.style.pointerEvents = "none";
   }
 
-  // ▼ すべての車両リストを閉じる（初期状態へ）
+  // ▼ 展開していた車両リストを全部閉じる
   document.querySelectorAll(".train-list").forEach(list => {
     list.classList.remove("show");
   });
 
-  // ▼ 必要ならホームに戻す（コメント外せばOK）
+  // ▼ 必要ならホームに戻す（コメント外すだけ）
   // window.location.href = "index.html";
 
 });
 </script>
 
+
 </body>
 </html>
+
 
 
