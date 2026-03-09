@@ -108,6 +108,42 @@ h1 {
   font-size: 16px;
   font-weight: bold;
 }
+
+/* ▼ 折りたたみ（5000系と同じ） */
+.train-list-collapsible {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition:
+    max-height 0.6s ease,
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+
+.train-list-collapsible.open {
+  max-height: 99999px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.show-all-btn {
+  display: block;
+  width: 200px;
+  margin: 20px auto;
+  padding: 10px 0;
+  text-align: center;
+  background: #fff;
+  border: 2px solid #333;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background 0.2s;
+}
+
+.show-all-btn:hover {
+  background: #f5f5f5;
+}
 </style>
 
 </head>
@@ -119,6 +155,17 @@ h1 {
 
 <div class="direction">←尾羽原　　高徳→</div>
 
+<!-- 基本情報 -->
+<div class="section-title">基本情報</div>
+<div class="spec-box">
+  <ul>
+    <li><b>運用者</b><br>尾羽急電鉄</li>
+    <li><b>製造所</b><br>京花車輛製作所・葉倉車両製作所 [HAKURAIL]</li>
+    <li><b>製造年</b><br>2022年〜2025年</li>
+    <li><b>運用開始</b><br>2025年10月27日</li>
+  </ul>
+</div>
+
 <!-- 共通仕様 -->
 <div class="section-title">共通仕様</div>
 <div class="spec-box">
@@ -132,33 +179,18 @@ h1 {
   </ul>
 </div>
 
+<!-- ▼ 全編成ボタン -->
+<div id="show-all-btn" class="show-all-btn">▼ 全編成を表示</div>
 
-<!-- 共通仕様 -->
-<div class="section-title">共通仕様</div>
-<div class="spec-box">
-  <ul>
-    <li>2両編成</li>
-    <li>乗客固定：×</li>
-    <li>自動放送：×</li>
-    <li>車掌乗務：〇</li>
-    <li>ブザー：〇</li>
-    <li>ドアカット：×</li>
-    <li>運転士交代：×</li>
-  </ul>
-</div>
-
-<!-- 編成 -->
-<div class="section-title">編成</div>
-<div class="direction">尾羽原 ←　→ 高徳</div>
-
-<div id="train-list"></div>
+<!-- ▼ 4001〜4009 の折りたたみ領域 -->
+<div id="train-list" class="train-list-collapsible"></div>
 
 <script>
 // ▼ 4001〜4009 まで自動生成
 const list = document.getElementById("train-list");
 
 for (let i = 1; i <= 9; i++) {
-  let num = String(i).padStart(1, "0");
+  let num = String(i);
 
   list.insertAdjacentHTML("beforeend", `
     <div class="section-title">400${num}F</div>
@@ -185,6 +217,18 @@ for (let i = 1; i <= 9; i++) {
     </div>
   `);
 }
+
+// ▼ ボタンで開閉（5000系と同じ）
+const btn = document.getElementById("show-all-btn");
+btn.addEventListener("click", () => {
+  list.classList.toggle("open");
+
+  if (list.classList.contains("open")) {
+    btn.textContent = "▲ 全編成を隠す";
+  } else {
+    btn.textContent = "▼ 全編成を表示";
+  }
+});
 </script>
 
 </body>
