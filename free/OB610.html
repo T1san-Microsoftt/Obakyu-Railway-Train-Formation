@@ -81,33 +81,16 @@ h1 {
 }
 
 /* ▼ 色分け */
-.red {
-  background: #ffdddd;
-}
+.red { background: #ffdddd; }
+.black { background: #e0e0e0; }
 
-.black {
-  background: #e0e0e0;
-}
+.car-top { height: 25px; position: relative; }
 
-.car-top {
-  height: 25px;
-  position: relative;
-}
+.car-body { text-align: center; font-size: 13px; }
 
-.car-body {
-  text-align: center;
-  font-size: 13px;
-}
+.car-type { font-size: 12px; margin-bottom: 2px; }
 
-.car-type {
-  font-size: 12px;
-  margin-bottom: 2px;
-}
-
-.car-number {
-  font-size: 16px;
-  font-weight: bold;
-}
+.car-number { font-size: 16px; font-weight: bold; }
 
 /* ▼ 折りたたみ（5000系と同じ） */
 .train-list-collapsible {
@@ -141,9 +124,7 @@ h1 {
   transition: background 0.2s;
 }
 
-.show-all-btn:hover {
-  background: #f5f5f5;
-}
+.show-all-btn:hover { background: #f5f5f5; }
 </style>
 
 </head>
@@ -186,7 +167,15 @@ h1 {
     <div class="car-top"></div>
     <div class="car-body">
       <div class="car-type">Tc</div>
-      <div class="car-number">1001</div>
+      <div class="car-number">1001-1F</div>
+    </div>
+  </div>
+
+  <div class="car red">
+    <div class="car-top"></div>
+    <div class="car-body">
+      <div class="car-type">M</div>
+      <div class="car-number">1001-2F</div>
     </div>
   </div>
 </div>
@@ -198,7 +187,15 @@ h1 {
     <div class="car-top"></div>
     <div class="car-body">
       <div class="car-type">Tc</div>
-      <div class="car-number">1051</div>
+      <div class="car-number">1051-1F</div>
+    </div>
+  </div>
+
+  <div class="car black">
+    <div class="car-top"></div>
+    <div class="car-body">
+      <div class="car-type">M</div>
+      <div class="car-number">1051-2F</div>
     </div>
   </div>
 </div>
@@ -221,7 +218,15 @@ for (let i = 1002; i <= 1050; i++) {
         <div class="car-top"></div>
         <div class="car-body">
           <div class="car-type">Tc</div>
-          <div class="car-number">${i}</div>
+          <div class="car-number">${i}-1F</div>
+        </div>
+      </div>
+
+      <div class="car red">
+        <div class="car-top"></div>
+        <div class="car-body">
+          <div class="car-type">M</div>
+          <div class="car-number">${i}-2F</div>
         </div>
       </div>
     </div>
@@ -237,7 +242,15 @@ for (let i = 1052; i <= 1100; i++) {
         <div class="car-top"></div>
         <div class="car-body">
           <div class="car-type">Tc</div>
-          <div class="car-number">${i}</div>
+          <div class="car-number">${i}-1F</div>
+        </div>
+      </div>
+
+      <div class="car black">
+        <div class="car-top"></div>
+        <div class="car-body">
+          <div class="car-type">M</div>
+          <div class="car-number">${i}-2F</div>
         </div>
       </div>
     </div>
