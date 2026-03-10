@@ -11,7 +11,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
-  padding-top: 160px; /* ヘッダー分の余白 */
+  padding-top: 200px; /* ヘッダー分の余白 */
 }
 
 /* ▼ ヘッダー（2段構成） */
@@ -132,10 +132,12 @@ h2 {
   font-weight: bold;
   color: #333;
   text-decoration: none;
-  padding: 10px 20px;
+  padding: 15px 40px; /* ← ボタンを大きくする */
   border: 2px solid #333;
-  border-radius: 10px;
+  border-radius: 12px;
   background: #fff;
+  width: 80%; /* ← 横幅をめっちゃ広くする（画面の80%） */
+  max-width: 900px; /* ← 大画面でもデカすぎないように上限 */
   transition: 0.25s;
 }
 
