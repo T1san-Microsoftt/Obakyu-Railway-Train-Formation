@@ -1,38 +1,101 @@
-<!-- ▼ 本線（HTMLで描いた縦配線図） -->
-<div class="diagram-section-title">本線（サンプル）</div>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>テスト配線図</title>
+
+<style>
+body {
+  font-family: "Yu Gothic", sans-serif;
+  background: #f0f0f0;
+  padding: 40px;
+}
+
+/* ▼ 外枠 */
+.diagram-track-wrapper {
+  width: 400px;
+  margin: 0 auto;
+  background: #fff;
+  border: 2px solid #333;
+  border-radius: 12px;
+  padding: 20px 40px;
+}
+
+/* ▼ 縦線＋駅の並び */
+.diagram-track {
+  position: relative;
+  margin-left: 80px;
+  padding: 10px 0;
+}
+
+/* ▼ 縦の線 */
+.diagram-track::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: #333;
+  margin-left: 20px;
+}
+
+/* ▼ 駅 */
+.station {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 28px 0;
+}
+
+/* ▼ 駅の丸 */
+.track-node {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid #333;
+  position: absolute;
+  left: 20px;
+  z-index: 2;
+}
+
+/* ▼ 駅名 */
+.station-name {
+  margin-left: 55px;
+  font-size: 18px;
+  font-weight: bold;
+}
+</style>
+
+</head>
+<body>
+
+<h2>配線図テスト</h2>
 
 <div class="diagram-track-wrapper">
   <div class="diagram-track">
 
-    <!-- 駅1 -->
     <div class="station">
       <div class="track-node"></div>
       <div class="station-name">尾羽</div>
     </div>
 
-    <!-- 駅2 -->
     <div class="station">
       <div class="track-node"></div>
       <div class="station-name">中尾羽</div>
     </div>
 
-    <!-- 駅3（支線分岐の例つき） -->
-    <div class="station branch">
+    <div class="station">
       <div class="track-node"></div>
       <div class="station-name">高徳</div>
-
-      <!-- 支線の枝 -->
-      <div class="branch-line"></div>
-      <div class="branch-station">高徳支線方面</div>
     </div>
 
-    <!-- 駅4 -->
     <div class="station">
       <div class="track-node"></div>
       <div class="station-name">新高徳</div>
     </div>
 
-    <!-- 駅5 -->
     <div class="station">
       <div class="track-node"></div>
       <div class="station-name">羽崎</div>
@@ -40,3 +103,7 @@
 
   </div>
 </div>
+
+</body>
+</html>
+
